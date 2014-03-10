@@ -22,6 +22,12 @@ App.PostsRoute = Ember.Route.extend({
   }
 });
 
+App.PostRoute = Ember.Route.extend({
+  model: function(params) {
+    return posts.findBy('id', params.post_id);
+  }
+});
+
 App.Router.map(function() {
   this.resource('about');
   this.resource('posts', function() {
@@ -43,8 +49,23 @@ App.PostController = Ember.ObjectController.extend ({
   }
 });
 
+Ember.Handlebars.helper('format-date', function(date) {
+  return moment(date).fromNow();
+});
+
+var showdown = new Showdown.converter();
+
+Ember.Handlebars.helper('format-markdown', function(input) {
+  return new Handlebars.SafeString(showdown.makeHtml(input));
+});
 
 
+// var convertMarkdown = (function{
+//     var converter = new Markdown.Converter();
+//     return function(str){
+//       return converter.makeHtml(str);
+//     }
+// })()
 
 
 
